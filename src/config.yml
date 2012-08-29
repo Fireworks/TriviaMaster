@@ -1,0 +1,36 @@
+# TriviaMaster Configuration
+questions: 
+  - "1. Who is the original creator of Minecraft?"
+  - "2. Example question 2"
+
+# Answers must match up with the order of the questions
+answers:
+  - "notch"
+  - "example answer 2"
+
+# Requires vault to use
+moneyReward: 0.0
+
+# Item - Amount - Data Value
+itemRewards:
+  - 4 5
+
+# Time in seconds for a question to last before skipping it
+duration: 60
+
+# Time in seconds to wait between questions
+timeBetween: 5
+
+##################
+
+# Language Options
+# Default color codes supported
+startMessage: "&6Trivia Event is starting! Good luck..."
+timeUp: "&6Time is up! Next question..."
+endMessage: "&6Trivia event has ended!"
+oneWinner: "&6The winner of the Trivia Event is &4[winner] &6with &4[points] &6points!"
+tiedWinners: "&6The winners of the Trivia Event are (tied for &4[points] &6points):"
+noWinners: "&6There were no winners of the Trivia Event!"
+
+# You cannot modify point values at this time
+answered: "&4[player] &6has answered the question correctly and received &41 point!"

@@ -1,0 +1,21 @@
+name: TriviaMaster
+version: 1.0.1
+authors: [Fireworks, Zonedabone]
+softdepend: [Vault]
+
+main: net.mysticrealms.fireworks.triviamaster.TriviaMaster
+
+commands:
+  triviamaster:
+    usage: /triviamaster <command>
+    aliases: tm
+    description: Master command.
+    permission: triviamaster.admin
+
+permissions:
+  triviamaster.admin:
+    default: op
+    description: Start/stop/reload trivia events.
+  triviamaster.participate:
+    default: true
+    description: Participate in trivia event.
