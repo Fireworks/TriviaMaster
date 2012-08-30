@@ -83,10 +83,13 @@ public class TriviaMaster extends JavaPlugin {
 	}
 
 	public String convertMessage(String s, Player p, List<Player> l, Integer max) {
-		s = ChatColor.translateAlternateColorCodes('&', s);
-		s = s.replaceAll("[player]", p.getName());
-		s = s.replaceAll("[winner]", (l.get(0).getName()));
-		s = s.replaceAll("[points]", Integer.toString(max));
+			s = ChatColor.translateAlternateColorCodes('&', s);
+		if (p != null)
+			s = s.replace("[player]", p.getName());
+		if (l != null)
+			s = s.replace("[winner]", (l.get(0).getName()));
+		if (max != null)
+			s = s.replace("[points]", Integer.toString(max));
 		return s;
 	}
 
@@ -102,17 +105,41 @@ public class TriviaMaster extends JavaPlugin {
 
 		if (config.isString("startMessage")) {
 			startMessage = config.getString("startMessage");
-		} else if (config.isString("timeUp")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("timeUp")) {
 			timeUp = config.getString("timeUp");
-		} else if (config.isString("endMessage")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("endMessage")) {
 			endMessage = config.getString("endMessage");
-		} else if (config.isString("oneWinner")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("oneWinner")) {
 			oneWinner = config.getString("oneWinner");
-		} else if (config.isString("tiedWinners")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("tiedWinners")) {
 			tiedWinners = config.getString("tiedWinners");
-		} else if (config.isString("noWinners")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("noWinners")) {
 			noWinners = config.getString("noWinners");
-		} else if (config.isString("answered")) {
+		} else {
+			return false;
+		}
+			
+		if (config.isString("answered")) {
 			answered = config.getString("answered");
 		} else {
 			return false;
@@ -142,7 +169,7 @@ public class TriviaMaster extends JavaPlugin {
 			return false;
 		}
 
-		if (config.isDouble("moneyReward")) {
+		if (config.isDouble("moneyReward") || config.isInt("moneyReward")) {
 			moneyReward = config.getDouble("moneyReward");
 		} else {
 			return false;
@@ -197,7 +224,7 @@ public class TriviaMaster extends JavaPlugin {
 		skipTask = s.scheduleSyncDelayedTask(this, new Runnable() {
 			@Override
 			public void run() {
-				Bukkit.broadcastMessage(ChatColor.GOLD + "Time is up! Next question...");
+				Bukkit.broadcastMessage(convertMessage(timeUp,null,null,null));
 				nextQuestion();
 			}
 		}, duration * 20);
@@ -234,7 +261,7 @@ public class TriviaMaster extends JavaPlugin {
 	public void stopQuiz() {
 		BukkitScheduler s = Bukkit.getScheduler();
 		s.cancelTask(skipTask);
-		getServer().broadcastMessage(ChatColor.GOLD + "Trivia event has ended!");
+		getServer().broadcastMessage(convertMessage(endMessage, null, null, null));
 		List<Player> winners = new ArrayList<Player>();
 		int max = 0;
 
@@ -249,14 +276,14 @@ public class TriviaMaster extends JavaPlugin {
 		}
 
 		if (winners.size() == 1)
-			Bukkit.broadcastMessage(ChatColor.GOLD + "The winner of the Trivia Event is " + ChatColor.DARK_RED + winners.get(0).getName() + ChatColor.GOLD + " with " + ChatColor.DARK_RED + max + ChatColor.GOLD + " points!");
+			Bukkit.broadcastMessage(convertMessage(oneWinner, null, winners, max));
 		else if (winners.size() > 1) {
-			Bukkit.broadcastMessage(ChatColor.GOLD + "The winners of the Trivia Event are (tied for " + ChatColor.DARK_RED + max + ChatColor.GOLD + " points):");
+			Bukkit.broadcastMessage(convertMessage(tiedWinners, null, winners, max));
 			for (Player p : winners) {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "* " + ChatColor.DARK_RED + p.getName());
 			}
 		} else
-			Bukkit.broadcastMessage(ChatColor.GOLD + "There were no winners of the Trivia Event!");
+			Bukkit.broadcastMessage(convertMessage(noWinners, null, null, null));
 
 		for (Player p : winners) {
 			Inventory i = p.getInventory();

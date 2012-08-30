@@ -27,7 +27,7 @@ public class TriviaMasterListener implements Listener {
 				plugin.isRunning = false;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 					public void run(){
-						Bukkit.broadcastMessage(ChatColor.DARK_RED + p.getName() + ChatColor.GOLD + " has answered the question correctly and received " + ChatColor.DARK_RED + "1 point!");
+						Bukkit.broadcastMessage(plugin.convertMessage(plugin.answered, p, null, null));
 						plugin.nextQuestion();
 					}
 				}, 1);
